@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
 import { ConfigService } from "@nestjs/config";
 import mongoose, { ConnectOptions, Connection } from "mongoose";
-import { User, userSchema } from "./username.model";
+import { IUser, userSchema } from "src/modules/login/models/customer.model";
+import { DATABASE_CONNECTIONS, USER_LOGIN } from "./database.constants";
 
 /* eslint-disable prettier/prettier */
 export const dataBaseProvider = [
     {
-        provide: "DATABASE_CONNECTION",
+        provide: DATABASE_CONNECTIONS,
         useFactory: (configService: ConfigService): Connection => {
             console.log(`DB url ${configService.get('db.url')}`);
 
@@ -28,9 +29,9 @@ export const dataBaseProvider = [
         inject: [ConfigService]
     },
     {
-        provide: "USER_DATA",
+        provide: USER_LOGIN,
         useFactory: (connection: mongoose.Connection, configService: ConfigService) => {
-            const UserSchema = connection.model<User>(
+            const UserSchema = connection.model<IUser>(
                 "userData",
                 userSchema,
                 "user"
@@ -41,6 +42,6 @@ export const dataBaseProvider = [
 
             return UserSchema;
         },
-        inject: ["DATABASE_CONNECTION", ConfigService]
+        inject: [DATABASE_CONNECTIONS, ConfigService]
     }
 ];

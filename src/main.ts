@@ -6,6 +6,7 @@ import { configuration } from './common/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix("portal")
   const config: any = await configuration();
   console.log(config);
   await app.listen(3000);
