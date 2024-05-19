@@ -2,7 +2,8 @@
 import { ConfigService } from "@nestjs/config";
 import mongoose, { ConnectOptions, Connection } from "mongoose";
 import { IUser, userSchema } from "src/modules/login/models/customer.model";
-import { DATABASE_CONNECTIONS, USER_LOGIN } from "./database.constants";
+import { DATABASE_CONNECTIONS, USER_ATTENDENCE, USER_LOGIN } from "./database.constants";
+import { IAttendence, attendenceSchema } from "src/modules/attendence/models/attendenace.model";
 
 /* eslint-disable prettier/prettier */
 export const dataBaseProvider = [
@@ -43,5 +44,21 @@ export const dataBaseProvider = [
             return UserSchema;
         },
         inject: [DATABASE_CONNECTIONS, ConfigService]
-    }
+    },
+    {
+        provide: USER_ATTENDENCE,
+        useFactory: (connection: mongoose.Connection, configService: ConfigService) => {
+            const UserSchema = connection.model<IAttendence>(
+                "attendance",
+                attendenceSchema,
+                "user_attendance"
+            )
+            if(configService.get('db.syncIndex')){
+                UserSchema.syncIndexes();
+            }
+
+            return UserSchema;
+        },
+        inject: [DATABASE_CONNECTIONS, ConfigService]
+    },
 ];

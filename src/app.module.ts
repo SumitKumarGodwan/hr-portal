@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { configuration } from './common/config';
 import { DataBaseModule } from './common/database/database.module';
 import { LoginPortalModule } from './modules/login/module';
+import { Attendancemodule } from './modules/attendence/module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { LoginPortalModule } from './modules/login/module';
       ignoreEnvFile: true
     }),
     DataBaseModule,
-    LoginPortalModule
+    LoginPortalModule,
+    Attendancemodule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -18,9 +18,15 @@ export class LoginPortalModelhelperService {
 
     async getUserDetails(input: IuserLogin) {
         const query: any = {}
-        query.username = input.username
-        query.emailId = input.emailId;
-        query.password = input.password
+        if(input.username) {
+            query.username = input.username
+        }
+        if(input.emailId){
+            query.emailId = input.emailId;
+        }
+        if(input.password) {
+            query.password = input.password
+        }
         return this.userLogin.findOne(query).lean();
     }
 }
