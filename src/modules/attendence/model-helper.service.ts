@@ -19,6 +19,10 @@ export class AttendenceModelHelperService {
         return this.attendenceModel.find(filter);
     }
 
+    async findlastAttendance(filter: FilterQuery<IAttendence>, limit: number) {
+        return this.attendenceModel.find(filter).sort({dateTime: -1}).limit(limit);
+    }
+
     async updateUserAttandance(filter: FilterQuery<IAttendence>, updateObj: UpdateQuery<IAttendence>) {
         return this.attendenceModel.findOneAndUpdate(filter, updateObj, {
             new: true

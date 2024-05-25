@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
-import { UserLoginDto } from "./dto/login-user.dto";
+import { Body, Controller, Get, Patch, Post, Query } from "@nestjs/common";
+import { UpdatedLoginDto, UserLoginDto } from "./dto/login-user.dto";
 import { LoginHrPortalService } from "./service";
 
 const prefix = "[USER_LOGIN_CONTROLLER]"
@@ -23,6 +23,7 @@ export class LoginHrPortalController {
         }
     }
 
+    // Need to update to JWT token
     @Get("")
     async getUserDetails(
         @Query("userName") userName: string,
@@ -37,6 +38,22 @@ export class LoginHrPortalController {
         } catch (error) {
             throw error;
         }
+    }
+
+    @Patch("update-password")
+    async updatePassword(@Body() body: UpdatedLoginDto) {
+        console.log(`${prefix} (updateUserNameAndPassword) Initiating update Password for emailId: ${body.filter}`);
+
+        try {
+            console.log(`${prefix} (updateUserNameAndPassword) body for updating user password: ${JSON.stringify(body)}`);
+            const res = await this.loginHrPortalService.updatePassword(body);
+            console.log(`${prefix} (updateUserNameAndPassword) successfully updated user password for emailId: ${body.filter}`);
+
+            return res;
+        } catch (error) {
+            throw error;
+        }
+
     }
 
 }

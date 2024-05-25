@@ -1,5 +1,5 @@
-import { IsEnum, IsString, isString } from "class-validator";
-import { UserTypeEnum } from "../enums/enum";
+import { IsEnum, IsOptional, IsString, isString } from "class-validator";
+import { UserTypeEnum, UpdatingFieldEnum } from "../enums/enum";
 
 export class UserLoginDto {
     @IsString()
@@ -13,4 +13,19 @@ export class UserLoginDto {
 
     @IsEnum(UserTypeEnum)
     type: UserTypeEnum
+}
+
+export class UpdatedLoginDto {
+    @IsString()
+    newPassword: string;
+
+    @IsString()
+    userName: string
+
+    @IsEnum(UpdatingFieldEnum)
+    @IsOptional()
+    updatingFeild: UpdatingFieldEnum
+
+    @IsString()
+    filter: string;
 }

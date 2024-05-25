@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Model } from "mongoose";
+import { FilterQuery, Model, UpdateQuery } from "mongoose";
 import { USER_LOGIN } from "src/common/database/database.constants";
 import { IUser } from "./models/customer.model";
 import { IuserLogin } from "./interfaces/interfaces";
@@ -28,5 +28,9 @@ export class LoginPortalModelhelperService {
             query.password = input.password
         }
         return this.userLogin.findOne(query).lean();
+    }
+
+    async updateDetails(filter: FilterQuery<IUser>, updeObj: UpdateQuery<IUser>) {
+        return this.userLogin.updateOne(filter, updeObj)
     }
 }

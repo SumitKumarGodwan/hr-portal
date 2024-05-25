@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { AttendenceService } from "./service";
 import { AttendanceDto } from "./dto/attendance.dto";
 
@@ -24,6 +24,20 @@ export class AttendenceController {
         } catch (error) {
             console.log(`${prefix} (markAttendence) failed to mark attendence for user transactionId | Error: ${error.message}`);
             throw error;
+        }
+    }
+
+    @Get("attendance-view")
+    async getAllAttendance(
+        @Query("transactionId") transactionId: string
+    ) {
+        try {
+            const res = await this.attendenceService.getLastThreeMonthsAttendance(transactionId);
+            console.log(`${prefix} (getAllAttendance) last 3 months attendance: ${res.length}`);
+
+            return res;
+        } catch (error) {
+            throw error
         }
     }
 }

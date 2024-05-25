@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { LoginPortalModelhelperService } from "./model-helper.service";
-import { IuserLogin } from "./interfaces/interfaces";
+import { IUserPasswordUpdate, IuserLogin } from "./interfaces/interfaces";
 
+const prefix = "USER_LOGIN_SERVICE"
 @Injectable()
 export class LoginHrPortalService {
     constructor(
@@ -46,6 +47,29 @@ export class LoginHrPortalService {
             }
             return result;
         } catch (error) {
+            throw error;
+        }
+    }
+
+    async updatePassword(body: IUserPasswordUpdate) {
+        try {
+
+            const {filter, userName, newPassword} = body;
+            let updateObj: any = {
+                $set: {password: newPassword}
+            };
+            const result = await this.loginModelhelperService.updateDetails({emailId: filter, username: userName}, updateObj);
+
+            if(!result) {
+                throw new BadRequestException({
+                    "message": "not updated password successfully",
+                    "error": "not updated password successfully",
+                    "statusCode": 400,
+                });
+            }
+            return result;
+        } catch (error) {
+            console.log(`${prefix} (updateUserNameAndPassword) failed to update password for username: ${body.userName} | Error: ${error.message}`);
             throw error;
         }
     }
