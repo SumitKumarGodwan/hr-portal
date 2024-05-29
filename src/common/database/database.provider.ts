@@ -9,23 +9,20 @@ import { IAttendence, attendenceSchema } from "src/modules/attendence/models/att
 export const dataBaseProvider = [
     {
         provide: DATABASE_CONNECTIONS,
-        useFactory: (configService: ConfigService): Connection => {
-            console.log(`DB url ${configService.get('db.url')}`);
+        useFactory: (configService: ConfigService) => {
+            // console.log(`DB url ${configService.get('db.url')}`);
+            // mongodb+srv://sumitgod510:Xz8nZJ2nzyu1NMXZ@cluster0.vsttzj8.mongodb.net/hr-portal?retryWrites=true&w=majority
 
-            const connection = mongoose.createConnection(configService.get('db.url'), {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            } as ConnectOptions)
+            const connection = mongoose.connect("mongodb+srv://sumitgod510:Xz8nZJ2nzyu1NMXZ@cluster0.vsttzj8.mongodb.net/hr-portal?retryWrites=true&w=majority", { serverApi: { version: '1', strict: true, deprecationErrors: true } })
+            // mongoose.createConnection(configService.get('db.url'), {
+            //     useNewUrlParser: true,
+            //     useUnifiedTopology: true
+            // } as ConnectOptions)
 
-            connection.on('connected', () => {
-                console.log("connected")
-            });
-
-            connection.on('error', (error: any) => {
-                console.log(error);
-            });
+            console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
             return connection;
+
         },
         inject: [ConfigService]
     },
