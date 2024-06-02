@@ -22,4 +22,7 @@ export const userSchema = new Schema({
         type: String,
         enum: Object.values(UserTypeEnum)
     }
+},
+{
+    timestamps: true
 });

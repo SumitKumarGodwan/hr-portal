@@ -40,4 +40,20 @@ export class AttendenceController {
             throw error
         }
     }
+
+    @Get("get-attendance")
+    async getAttendanceForTimePeriod(
+        @Query("fromDate") fromDate: string,
+        @Query("toDate") toDate: string,
+        @Query("transactionId") transactionId: string
+    ) {
+        try {
+            const res = await this.attendenceService.getAttendanceForTimePeriod({fromDate, toDate, transactionId});
+            console.log(`${prefix} (getAllAttendance) attendance for specific time period: ${JSON.stringify(res)}`);
+
+            return res;
+        } catch (error) {
+            throw error
+        }
+    }
 }

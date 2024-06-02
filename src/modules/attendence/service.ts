@@ -32,20 +32,20 @@ export class AttendenceService {
                     "message": "Dont have any previous attendance to be clockout",
                     "error": "Dont have any previous attendance to be clockout",
                     "statusCode": 400,
-                }); 
+                });
             }
-    
+
             let res: any
             if(!_.isEmpty(isUserAttended) && attendancetype == ATTENDANCE_ENUM.CLOCKIN){
                 return isUserAttended[0];
             }
-            
+
             if(!_.isEmpty(isUserAttended) && attendancetype == ATTENDANCE_ENUM.CLOCKOUT){
-                
+
                 res = await this.attendenceModelhelper.updateUserAttandance({isClockedOut: false, id}, {isClockedOut: true, clockOutTime: moment().format("YYYY-MM-DDTHH:mm:ss.SSS")});
-    
+
                 console.log(`${prefix} (markAttendence) logged out user: ${JSON.stringify(res)}`);
-    
+
                 return res;
             }
 
@@ -71,7 +71,7 @@ export class AttendenceService {
                 }
 
             }
-    
+
             const obj: IAttendance = {
                 id: id,
                 dateTime: moment().format("YYYY-MM-DDTHH:mm:ss.SSS"),
@@ -79,10 +79,10 @@ export class AttendenceService {
                 clockOutTime: moment().format("YYYY-MM-DDTHH:mm:ss.SSS"),
                 isClockedOut: false
             }
-    
+
             res = await this.attendenceModelhelper.createAttendance(obj);
             console.log(`${prefix} (markAttendence) successfullu marked attemdance: ${JSON.stringify(res)}`);
-    
+
             return res;
         } catch (error) {
             console.log(`${prefix} (markAttendence) failed to mark attemdance for id: ${id} | Error: ${error.message}`);
@@ -92,7 +92,31 @@ export class AttendenceService {
 
     async getLastThreeMonthsAttendance(transactionId: string) {
         try {
-            const result = await this.attendenceModelhelper.findlastAttendance({id: transactionId, isClockedOut: true}, 90);
+            const result = await this.attendenceModelhelper.findlastAttendance({ id: transactionId }, 93);
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getAttendanceForTimePeriod(input: { fromDate: string, toDate: string, transactionId: string}) {
+        try {
+
+            const fromDate = new Date(input.fromDate)
+            const toDate = new Date(input.toDate)
+
+            console.log(`${prefix} (getAttendanceForTimePeriod) fromDate: ${fromDate} toDate: ${toDate} for transactionId: ${input.transactionId}`);
+            const filter: any = {
+                id: input.transactionId,
+                createdAt: {
+                    $gte: fromDate,
+                    $lte: toDate
+                }
+            }
+
+            console.log(`${prefix} (getAttendanceForTimePeriod) query to find attendance: ${JSON.stringify(filter)}`)
+            const result = await this.attendenceModelhelper.findUserAttendance(filter);
+
             return result;
         } catch (error) {
             throw error;

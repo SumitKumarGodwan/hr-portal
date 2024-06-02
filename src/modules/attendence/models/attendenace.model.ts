@@ -18,4 +18,6 @@ export const attendenceSchema = new Schema ({
         default: false
     }
 },
-{})
+{
+    timestamps: true
+})

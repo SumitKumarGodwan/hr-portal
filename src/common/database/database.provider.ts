@@ -19,8 +19,6 @@ export const dataBaseProvider = [
             //     useUnifiedTopology: true
             // } as ConnectOptions)
 
-            console.log("Pinged your deployment. You successfully connected to MongoDB!");
-
             return connection;
 
         },
