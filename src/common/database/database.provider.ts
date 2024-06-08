@@ -13,7 +13,7 @@ export const dataBaseProvider = [
             // console.log(`DB url ${configService.get('db.url')}`);
             // mongodb+srv://sumitgod510:Xz8nZJ2nzyu1NMXZ@cluster0.vsttzj8.mongodb.net/hr-portal?retryWrites=true&w=majority
 
-            const connection = mongoose.connect("mongodb+srv://sumitgod510:Xz8nZJ2nzyu1NMXZ@cluster0.vsttzj8.mongodb.net/hr-portal?retryWrites=true&w=majority", { serverApi: { version: '1', strict: true, deprecationErrors: true } })
+            const connection = mongoose.connect(configService.get('db.url'), { serverApi: { version: '1', strict: true, deprecationErrors: true } })
             // mongoose.createConnection(configService.get('db.url'), {
             //     useNewUrlParser: true,
             //     useUnifiedTopology: true
