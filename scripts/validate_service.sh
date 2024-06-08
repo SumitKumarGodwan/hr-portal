@@ -1,3 +1,4 @@
 #!/bin/bash
-# Commands to validate the service
-echo "Validating service"
+
+# Check if the application is running
+curl -f http://localhost:3000/health || exit 1
