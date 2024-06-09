@@ -4,4 +4,4 @@ curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
 sudo yum install -y nodejs
 
 # Clean old application files
-rm -rf /home/ec2-user
+sudo rm -rf /home/ec2-user
