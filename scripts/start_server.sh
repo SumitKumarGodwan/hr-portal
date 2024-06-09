@@ -1,9 +1,6 @@
 #!/bin/bash
 cd /home/ec2-user
 
-# Build the application
-npm run build
-
 # Start the Node.js server in the background and redirect output to logs
 npm start > server.log 2> error.log < /dev/null &
 
