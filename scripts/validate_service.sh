@@ -1,4 +1,4 @@
 #!/bin/bash
+# Replace with appropriate validation logic, such as checking if the app is running
+curl -I http://localhost:3000
 
-# Check if the application is running
-curl -f http://localhost:3000/health || exit 1

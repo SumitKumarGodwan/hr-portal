@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sudo apt-get update
-sudo apt-get install nodejs -y
+#!/bin/bash
+chmod -R 755 /home/ec2-user

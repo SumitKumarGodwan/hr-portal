@@ -1,4 +1,5 @@
 #!/bin/bash
+cd /home/ec2-user
 
 # Build the application
 npm run build
