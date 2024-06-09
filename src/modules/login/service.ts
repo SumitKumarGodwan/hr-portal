@@ -1,12 +1,14 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { LoginPortalModelhelperService } from "./model-helper.service";
 import { IUserPasswordUpdate, IuserLogin } from "./interfaces/interfaces";
+import { JwtService } from "@nestjs/jwt";
 
 const prefix = "USER_LOGIN_SERVICE"
 @Injectable()
 export class LoginHrPortalService {
     constructor(
-        private loginModelhelperService: LoginPortalModelhelperService
+        private loginModelhelperService: LoginPortalModelhelperService,
+        private readonly jwtService: JwtService
     ) {
 
     }
@@ -17,14 +19,20 @@ export class LoginHrPortalService {
             // 1. Check is user already present
             const isUserPresent = await this.loginModelhelperService.getUserDetails(data);
 
+            const jwtTokenPayload = {username: data.username, password: data.password}
+
             if (isUserPresent) {
-                return "already registered user";
+                return {
+                    access_token: await this.jwtService.signAsync(jwtTokenPayload),
+                }
             }
             await this.loginModelhelperService.createUser(data);
 
             console.log(`successfully user created with ${JSON.stringify(data)}`);
 
-            return "registered";
+            return {
+                access_token: await this.jwtService.signAsync(jwtTokenPayload),
+            }
         } catch (error) {
             console.error(`failed to create user | Error: ${JSON.stringify(error)}`);
             throw error;

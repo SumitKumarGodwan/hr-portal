@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { UpdatedLoginDto, UserLoginDto } from "./dto/login-user.dto";
 import { LoginHrPortalService } from "./service";
+import { AuthGuard } from "src/common/guard/authguard";
 
 const prefix = "[USER_LOGIN_CONTROLLER]"
 
@@ -24,6 +25,7 @@ export class LoginHrPortalController {
     }
 
     // Need to update to JWT token
+    @UseGuards(AuthGuard)
     @Get("")
     async getUserDetails(
         @Query("userName") userName: string,
