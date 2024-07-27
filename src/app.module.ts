@@ -7,6 +7,7 @@ import { configuration } from './common/config';
 import { DataBaseModule } from './common/database/database.module';
 import { LoginPortalModule } from './modules/login/module';
 import { Attendancemodule } from './modules/attendence/module';
+import { DocumentModule } from './modules/documents/module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { Attendancemodule } from './modules/attendence/module';
     }),
     DataBaseModule,
     LoginPortalModule,
-    Attendancemodule
+    Attendancemodule,
+    DocumentModule
   ],
   controllers: [AppController],
   providers: [AppService],

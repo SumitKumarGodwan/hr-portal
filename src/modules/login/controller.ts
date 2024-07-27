@@ -43,6 +43,7 @@ export class LoginHrPortalController {
     }
 
     @Patch("update-password")
+    @UseGuards(AuthGuard)
     async updatePassword(@Body() body: UpdatedLoginDto) {
         console.log(`${prefix} (updateUserNameAndPassword) Initiating update Password for emailId: ${body.filter}`);
 

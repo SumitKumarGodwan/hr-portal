@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { AttendenceService } from "./service";
-import { AttendanceDto } from "./dto/attendance.dto";
+import { AttendanceDto, UpdateLeaveDto } from "./dto/attendance.dto";
+import { AuthGuard } from "src/common/guard/authguard";
 
 const prefix = "ATTENDENCE_SERVICE";
 
@@ -13,6 +14,7 @@ export class AttendenceController {
     }
 
     @Post("")
+    @UseGuards(AuthGuard)
     async markAttendence(
         @Body() body: AttendanceDto
     ) {
@@ -28,6 +30,7 @@ export class AttendenceController {
     }
 
     @Get("attendance-view")
+    @UseGuards(AuthGuard)
     async getAllAttendance(
         @Query("transactionId") transactionId: string
     ) {
@@ -42,6 +45,7 @@ export class AttendenceController {
     }
 
     @Get("get-attendance")
+    @UseGuards(AuthGuard)
     async getAttendanceForTimePeriod(
         @Query("fromDate") fromDate: string,
         @Query("toDate") toDate: string,
@@ -54,6 +58,44 @@ export class AttendenceController {
             return res;
         } catch (error) {
             throw error
+        }
+    }
+
+    @Post("create-leaves")
+    @UseGuards(AuthGuard)
+    async createUserLeaves(@Body() body: {id: string}){
+        try {
+            console.log(`${prefix} (createUserLeaves) initiating create leaves for id: ${body.id}`);
+            const res = await this.attendenceService.createUserLeaves(body.id);
+            return res;
+        } catch (error) {
+            throw error
+        }
+    }
+
+    @Get("get-leaves")
+    @UseGuards(AuthGuard)
+    async getUserLeaves(@Query("id") id: string,) {
+        try {
+            console.log(`${prefix} (getUserLeaves) initiating get leaves for id: ${id}`);
+            const res = await this.attendenceService.getLeaves(id);
+            return res;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @Patch("update-leaves")
+    @UseGuards(AuthGuard)
+    async updateLeaves(@Body() body: UpdateLeaveDto) {
+        try {
+            const {id} = body
+            console.log(`${prefix} (updateLeaves) initiating update leaves for id: ${id} body: ${JSON.stringify(body)}`);
+
+            const res = await this.attendenceService.updateLeaves(body);
+            return res;
+        } catch (error) {
+            throw error;
         }
     }
 }

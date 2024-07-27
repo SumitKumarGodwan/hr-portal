@@ -2,8 +2,9 @@
 import { ConfigService } from "@nestjs/config";
 import mongoose, { ConnectOptions, Connection } from "mongoose";
 import { IUser, userSchema } from "src/modules/login/models/customer.model";
-import { DATABASE_CONNECTIONS, USER_ATTENDENCE, USER_LOGIN } from "./database.constants";
+import { DATABASE_CONNECTIONS, USER_ATTENDENCE, USER_LEAVES, USER_LOGIN } from "./database.constants";
 import { IAttendence, attendenceSchema } from "src/modules/attendence/models/attendenace.model";
+import { ILeaves, leaveSchema } from "src/modules/attendence/models/leaves.model";
 
 /* eslint-disable prettier/prettier */
 export const dataBaseProvider = [
@@ -56,4 +57,20 @@ export const dataBaseProvider = [
         },
         inject: [DATABASE_CONNECTIONS, ConfigService]
     },
+    {
+        provide: USER_LEAVES,
+        useFactory: (connection: mongoose.Connection, configService: ConfigService) => {
+            const UserLeaveSchema = connection.model<ILeaves>(
+                "leaves",
+                leaveSchema,
+                "user_leaves"
+            )
+            if(configService.get('db.syncIndex')){
+                UserLeaveSchema.syncIndexes();
+            }
+
+            return UserLeaveSchema;
+        },
+        inject: [DATABASE_CONNECTIONS, ConfigService]
+    }
 ];
