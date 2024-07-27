@@ -13,8 +13,8 @@ export class S3Service {
             const s3Client = new S3Client({
                 region: 'ap-south-1', // e.g., 'us-west-2'
                 credentials: {
-                    accessKeyId: 'AKIA2GZUB3JYAFTNZNNG',
-                    secretAccessKey: '7qeVrmyWHMCpoMv0PHxTTb2HthymQH/98JERd7Gy',
+                    accessKeyId: '',
+                    secretAccessKey: '',
                 },
             });
 
